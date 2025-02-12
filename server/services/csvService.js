@@ -29,3 +29,5 @@ class CsvService {
     return csvWriter.writeRecords(data);
   }
 }
+
+module.exports = CsvService;

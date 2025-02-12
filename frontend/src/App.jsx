@@ -1,14 +1,18 @@
-import { useState } from 'react'
-import './App.css'
-import SecretSanta from './components/SecretSanta'
+// src/App.jsx
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout';
+import SecretSanta from './components/SecretSanta';
 
 function App() {
-  
   return (
-    <>
-      <SecretSanta/>
-    </>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<SecretSanta />} />
+        </Route>
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;

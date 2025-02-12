@@ -36,3 +36,5 @@ class SecretSantaAssigner {
     return assignments;
   }
 }
+
+module.exports = SecretSantaAssigner;
