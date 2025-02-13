@@ -111,58 +111,73 @@ const SecretSanta = () => {
             Secret Santa Organizer
           </CardTitle>
         </CardHeader>
+
         <CardContent className="space-y-4">
-          {error && (
-            <Alert variant="destructive">
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
+          <div className='flex-col justify-center'>
+            <div className="flex-col items-center">
+              {error && (
+                <Alert variant="destructive">
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
 
-          {success && (
-            <Alert>
-              <AlertDescription>{success}</AlertDescription>
-            </Alert>
-          )}
+              {success && (
+                <Alert>
+                  <AlertDescription>{success}</AlertDescription>
+                </Alert>
+              )}
+            </div>
 
-          <div className="space-y-4">
-            {/* Employee Data Upload */}
-            <div className="flex items-center space-x-4">
-              <input
-                type="file"
-                accept=".csv"
-                onChange={(e) => handleFileUpload(e, 'employees')}
-                className="block w-full text-sm text-slate-500
+
+            <div className="flex-col justify-center items-center">
+              <div className="flex justify-center space-y-4">
+                {/* Employee Data Upload */}
+                <div className="flex-col justify-center space-x-4">
+                  <p>Employee Data</p>
+                  <input
+                    type="file"
+                    accept=".csv"
+                    onChange={(e) => handleFileUpload(e, 'employees')}
+                    className="block w-full text-sm text-slate-500
                   file:mr-4 file:py-2 file:px-4
                   file:rounded-full file:border-0
                   file:text-sm file:font-semibold
                   file:bg-violet-50 file:text-violet-700
                   hover:file:bg-violet-100"
-              />
-            </div>
+                  />
+                </div>
 
-            {/* Previous Assignments Upload */}
-            <div className="flex items-center space-x-4">
-              <input
-                type="file"
-                accept=".csv"
-                onChange={(e) => handleFileUpload(e, 'assignments')}
-                className="block w-full text-sm text-slate-500
+                {/* Previous Assignments Upload */}
+                <div className="flex-col justify-center space-x-4">
+                  <p>Previous Assignment Data</p>
+                  <input
+                    type="file"
+                    accept=".csv"
+                    onChange={(e) => handleFileUpload(e, 'assignments')}
+                    className="block w-full text-sm text-slate-500
                   file:mr-4 file:py-2 file:px-4
                   file:rounded-full file:border-0
                   file:text-sm file:font-semibold
                   file:bg-violet-50 file:text-violet-700
                   hover:file:bg-violet-100"
-              />
+                  />
+                </div>
+              </div>
+
+
+              <div className="flex justify-center">
+                <Button
+                  onClick={uploadFiles}
+                  disabled={loading || !employeesFile || !assignmentsFile}
+                  className="flex items-center space-x-2"
+                >
+                  <Upload className="w-4 h-4" />
+                  <span>Upload</span>
+                </Button>
+              </div>
+
             </div>
 
-            <Button
-              onClick={uploadFiles}
-              disabled={loading || !employeesFile || !assignmentsFile}
-              className="flex items-center space-x-2"
-            >
-              <Upload className="w-4 h-4" />
-              <span>Upload</span>
-            </Button>
 
             <div className="flex justify-center space-x-4">
               <Button
