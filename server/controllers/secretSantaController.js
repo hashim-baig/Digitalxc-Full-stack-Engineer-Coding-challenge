@@ -1,4 +1,3 @@
-// server/controllers/secretSantaController.js
 const fs = require('fs');
 const path = require('path');
 const Employee = require('../models/Employee');
@@ -9,18 +8,18 @@ const CsvService = require('../services/csvService');
 class SecretSantaController {
   static async uploadData(req, res) {
     try {
-      // Ensure uploads directory exists
+      
       const uploadDir = path.join(__dirname, '../uploads');
       if (!fs.existsSync(uploadDir)) {
         fs.mkdirSync(uploadDir, { recursive: true });
       }
   
-      // Validate file upload
+      
       if (!req.files || !req.files.employees || !req.files.previousAssignments) {
         return res.status(400).json({ error: 'Both employee data and previous assignments files are required' });
       }
   
-      // Access the uploaded files
+      
       const employeesFile = req.files.employees[0]; // Access the first file in the array
       const previousAssignmentsFile = req.files.previousAssignments[0]; // Access the first file in the array
   
@@ -28,15 +27,15 @@ class SecretSantaController {
         return res.status(400).json({ error: 'Files are missing or incorrectly formatted' });
       }
   
-      // Parse CSV files
+      
       const employees = await CsvService.parseCsvFile(employeesFile.path); // Use the file path
       const previousAssignments = await CsvService.parseCsvFile(previousAssignmentsFile.path); // Use the file path
   
-      // Remove old employees and assignments
+     
       await Employee.deleteMany({});
       await Assignment.deleteMany({});
   
-      // Store new employees
+     
       const savedEmployees = await Employee.insertMany(
         employees.map(emp => ({
           name: emp.Employee_Name,
@@ -44,11 +43,11 @@ class SecretSantaController {
         }))
       );
   
-      // Map employee emails to IDs for assignments
+     
       const employeeMap = new Map();
       savedEmployees.forEach(emp => employeeMap.set(emp.emailId, emp._id));
   
-      // Store new assignments
+      
       const year = new Date().getFullYear() - 1; // Assignments are from the last year
       const savedAssignments = [];
   
@@ -66,7 +65,7 @@ class SecretSantaController {
         }
       }
   
-      // Save the uploaded files to the uploads directory
+      
       const employeeFilePath = path.join(uploadDir, employeesFile.filename);
       const previousAssignmentsFilePath = path.join(uploadDir, previousAssignmentsFile.filename);
   

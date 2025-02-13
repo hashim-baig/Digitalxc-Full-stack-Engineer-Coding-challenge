@@ -1,4 +1,3 @@
-// server/utils/secretSantaAssigner.js
 class SecretSantaAssigner {
   constructor(employees, previousAssignments = []) {
     this.employees = employees;

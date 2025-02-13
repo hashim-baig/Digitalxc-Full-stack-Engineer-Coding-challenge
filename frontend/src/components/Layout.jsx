@@ -1,4 +1,3 @@
-// src/components/Layout.jsx
 import { Outlet } from 'react-router-dom';
 import { GiftIcon } from 'lucide-react';
 
