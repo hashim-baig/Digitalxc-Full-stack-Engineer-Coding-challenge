@@ -1,4 +1,3 @@
-// src/services/api.js
 import axios from 'axios';
 
 const api = axios.create({
@@ -8,9 +7,11 @@ const api = axios.create({
   },
 });
 
-export const uploadEmployees = async (file) => {
+export const uploadEmployees = async (employeesFile, assignmentsFile) => {
   const formData = new FormData();
-  formData.append('file', file);
+  formData.append('employeesFile', employeesFile);
+  formData.append('assignmentsFile', assignmentsFile);
+  
   const response = await api.post('/upload-employees', formData);
   return response.data;
 };

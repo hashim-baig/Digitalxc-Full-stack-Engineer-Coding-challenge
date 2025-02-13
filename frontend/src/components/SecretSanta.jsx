@@ -5,49 +5,56 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Upload, Download, Gift } from 'lucide-react';
 
 const SecretSanta = () => {
-  const [file, setFile] = useState(null);
+  const [employeesFile, setEmployeesFile] = useState(null);
+  const [assignmentsFile, setAssignmentsFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  const handleFileUpload = async (event) => {
+  const handleFileUpload = (event, type) => {
     const file = event.target.files[0];
     if (!file) return;
-    
+
     if (!file.name.endsWith('.csv')) {
-      setError('Please upload a CSV file');
+      setError('Please upload a valid CSV file');
       return;
     }
-    
-    setFile(file);
+
+    if (type === 'employees') {
+      setEmployeesFile(file);
+    } else {
+      setAssignmentsFile(file);
+    }
+
     setError('');
   };
 
-  const uploadEmployees = async () => {
-    if (!file) {
-      setError('Please select a file first');
+  const uploadFiles = async () => {
+    if (!employeesFile || !assignmentsFile) {
+      setError('Please select both files before uploading');
       return;
     }
 
     setLoading(true);
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('employees', employeesFile);
+    formData.append('previousAssignments', assignmentsFile);
 
     try {
-      const response = await fetch('/api/upload-employees', {
+      const response = await fetch('/api/upload-data', {
         method: 'POST',
         body: formData,
       });
 
       const data = await response.json();
       if (data.success) {
-        setSuccess('Employees uploaded successfully!');
+        setSuccess('Files uploaded successfully!');
         setError('');
       } else {
         setError(data.error || 'Upload failed');
       }
     } catch (err) {
-      setError('Failed to upload employees');
+      setError('Failed to upload files');
     } finally {
       setLoading(false);
     }
@@ -110,7 +117,7 @@ const SecretSanta = () => {
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
-          
+
           {success && (
             <Alert>
               <AlertDescription>{success}</AlertDescription>
@@ -118,11 +125,12 @@ const SecretSanta = () => {
           )}
 
           <div className="space-y-4">
+            {/* Employee Data Upload */}
             <div className="flex items-center space-x-4">
               <input
                 type="file"
                 accept=".csv"
-                onChange={handleFileUpload}
+                onChange={(e) => handleFileUpload(e, 'employees')}
                 className="block w-full text-sm text-slate-500
                   file:mr-4 file:py-2 file:px-4
                   file:rounded-full file:border-0
@@ -130,15 +138,31 @@ const SecretSanta = () => {
                   file:bg-violet-50 file:text-violet-700
                   hover:file:bg-violet-100"
               />
-              <Button
-                onClick={uploadEmployees}
-                disabled={loading || !file}
-                className="flex items-center space-x-2"
-              >
-                <Upload className="w-4 h-4" />
-                <span>Upload</span>
-              </Button>
             </div>
+
+            {/* Previous Assignments Upload */}
+            <div className="flex items-center space-x-4">
+              <input
+                type="file"
+                accept=".csv"
+                onChange={(e) => handleFileUpload(e, 'assignments')}
+                className="block w-full text-sm text-slate-500
+                  file:mr-4 file:py-2 file:px-4
+                  file:rounded-full file:border-0
+                  file:text-sm file:font-semibold
+                  file:bg-violet-50 file:text-violet-700
+                  hover:file:bg-violet-100"
+              />
+            </div>
+
+            <Button
+              onClick={uploadFiles}
+              disabled={loading || !employeesFile || !assignmentsFile}
+              className="flex items-center space-x-2"
+            >
+              <Upload className="w-4 h-4" />
+              <span>Upload</span>
+            </Button>
 
             <div className="flex justify-center space-x-4">
               <Button

@@ -1,4 +1,3 @@
-// server/middleware/upload.js
 const multer = require('multer');
 const path = require('path');
 
@@ -25,6 +24,6 @@ const upload = multer({
   limits: {
     fileSize: 1024 * 1024 * 5 // 5MB limit
   }
-});
+});  // ✅ Export Multer instance
 
-module.exports = upload;
+module.exports = upload;  // ✅ Correctly exporting Multer instance
