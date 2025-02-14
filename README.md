@@ -92,13 +92,13 @@ The **Secret Santa Organizer** is a full-stack web application designed to help 
 4. **Start the Backend Server**:
    ```bash
    cd server
-   npm start
+   npm run dev
    ```
 
 5. **Start the Frontend Development Server**:
    ```bash
    cd ../frontend
-   npm start
+   npm run dev
    ```
 
 6. **Access the Application**:
